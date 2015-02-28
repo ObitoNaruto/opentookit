@@ -16,17 +16,21 @@ def send_smartcard_cmd(cmdstr_list):
     cardservice=cardrequest.waitforcard()
 
     conn=cardservice.connection
-    conn.connect()
+    try:
+        conn.connect()
 
-    count=1
-    result=list()
-    for cmdstr in cmdstr_list:
-        cmd=list((ord(x) for x in binascii.unhexlify(cmdstr)))
-        print ">>>%d %s" % (count,toHexString(cmd).replace(' ',''))
-        data, sw1, sw2=conn.transmit(cmd)
+        count=1
+        result=list()
+        for cmdstr in cmdstr_list:
+            cmd=list((ord(x) for x in binascii.unhexlify(cmdstr)))
+            print ">>>%d %s" % (count,toHexString(cmd).replace(' ',''))
+            data, sw1, sw2=conn.transmit(cmd)
 
-        print "<<<%d data: %s sw: %02x%02x" % (count,toHexString(data).replace(' ',''),sw1,sw2)
-        count+=1
+            print "<<<%d data: %s sw: %02x%02x" % (count,toHexString(data).replace(' ',''),sw1,sw2)
+            count+=1
+
+    finally:
+        conn.disconnect()
 
     return result.append((data, sw1, sw2))
 
