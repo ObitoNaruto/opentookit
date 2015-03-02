@@ -6,6 +6,7 @@ from smartcard.CardRequest import CardRequest
 
 import sys
 import binascii
+import fileinput
 
 """
 send apdu command via smartcard reader
@@ -40,8 +41,15 @@ usage example 1: <PATH-OF-ME>/send-to-smartcard.py 00A4040000
 usage example 2: <PATH-OF-ME>/send-to-smartcard.py 00A4040000 80CA9F7F00
 """
 if __name__=='__main__':
-    if(len(sys.argv)<2):
-        print "usage: %s: <APDU> [,<APDU> [,<APDU>] ...]" % sys.argv[0]
+    if(len(sys.argv)>1):
+        if(sys.argv[1]=='-'):
+            lines=list()
+            for line in fileinput.input():
+                lines.append(line.strip())
+        else:
+            lines=sys.argv[1:]
+
+        send_smartcard_cmd(lines)
     else:
-        send_smartcard_cmd(sys.argv[1:])
+        print "no APDU found. usage: %s: <APDU> [,<APDU> [,<APDU>] ...]" % sys.argv[0]
 
