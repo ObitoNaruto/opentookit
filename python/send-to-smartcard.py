@@ -40,12 +40,16 @@ def send_smartcard_cmd(cmdstr_list):
 usage example 1: <PATH-OF-ME>/send-to-smartcard.py 00A4040000
 usage example 2: <PATH-OF-ME>/send-to-smartcard.py 00A4040000 80CA9F7F00
 """
+
+COMMENT_IND=set((';','#','/'))
 if __name__=='__main__':
     if(len(sys.argv)>1):
         if(sys.argv[1]=='-'):
             lines=list()
             for line in fileinput.input():
-                lines.append(line.strip())
+                line=line.strip()
+                if(len(line)>0 and not line[0] in COMMENT_IND):
+                    lines.append(line)
         else:
             lines=sys.argv[1:]
 
