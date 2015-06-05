@@ -13,7 +13,7 @@ if __name__ == '__main__':
         sys.exit(1)
     else:
         hex_str = sys.argv[1]
-        base64_str = base64.b64encode(binascii.unhexlify(hex_str)).upper()
+        base64_str = base64.b64encode(binascii.unhexlify(hex_str))
         print "\n========= Result Begin ========="
         print base64_str
         print "========= Result END =========\n"
